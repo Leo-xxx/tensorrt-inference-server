@@ -192,6 +192,23 @@ ExternalProject_Add(trtis-test-utils
 )
 
 #
+# Build example custom backends
+#
+ExternalProject_Add(trtis-custom-backends
+  PREFIX trtis-custom-backends
+  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/trtis-custom-backends"
+  BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/trtis-custom-backends"
+  CMAKE_CACHE_ARGS
+    -DProtobuf_DIR:PATH=${_FINDPACKAGE_PROTOBUF_CONFIG_DIR}
+    -Dc-ares_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/c-ares/lib/cmake/c-ares
+    -DZLIB_ROOT:STRING=${CMAKE_CURRENT_BINARY_DIR}/zlib
+    ${_CMAKE_ARGS_OPENSSL_ROOT_DIR}
+    -DgRPC_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/grpc/lib/cmake/grpc
+    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/trtis-custom-backends/install
+    -DTRTIS_ENABLE_CUSTOM:BOOL=${TRTIS_ENABLE_CUSTOM}
+)
+
+#
 # Build TRTIS client libraries and examples
 #
 ExternalProject_Add(trtis-clients

@@ -25,7 +25,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 cmake_minimum_required (VERSION 3.5)
-project (trtis-clients)
+project (trtis-custom-backends)
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
@@ -62,6 +62,7 @@ find_package(gRPC CONFIG REQUIRED)
 message(STATUS "Using gRPC ${gRPC_VERSION}")
 include_directories($<TARGET_PROPERTY:gRPC::grpc,INTERFACE_INCLUDE_DIRECTORIES>)
 
+if(${TRTIS_ENABLE_CUSTOM})
 add_subdirectory(../../src/core src/core)
-add_subdirectory(../../src/clients/c++ src/clients/c++)
-add_subdirectory(../../src/clients/python src/clients/python)
+add_subdirectory(../../src/custom/addsub src/custom/addsub)
+endif() # TRTIS_ENABLE_CUSTOM

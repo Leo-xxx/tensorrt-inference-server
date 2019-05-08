@@ -80,8 +80,8 @@ COPY src/core src/core
 # are 2 make invocations below.
 RUN cd build && \
     cmake -DCMAKE_BUILD_TYPE=Release && \
-    (make -j8 trtis-clients || true) && \
-    make -j8 trtis-clients && \
+    (make -j16 trtis-clients || true) && \
+    make -j16 trtis-clients && \
     export VERSION=`cat /workspace/VERSION` && \
     (cd trtis-clients/install && tar zcf /workspace/v$VERSION.clients.tar.gz *)
 

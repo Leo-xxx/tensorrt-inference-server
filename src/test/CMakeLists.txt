@@ -31,13 +31,12 @@ cmake_minimum_required (VERSION 3.5)
 #
 if(${TRTIS_ENABLE_TENSORRT})
 add_executable(caffe2plan caffe2plan.cc)
-target_include_directories(caffe2plan PRIVATE ${CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+target_include_directories(caffe2plan PRIVATE ${CUDA_INCLUDE_DIRS})
 target_link_libraries(
   caffe2plan
   -lnvinfer
   -lnvcaffe_parser
-  -L/usr/local/cuda/lib64
-  -lcudart
+  ${CUDA_LIBRARIES}
 )
 install(
   TARGETS caffe2plan

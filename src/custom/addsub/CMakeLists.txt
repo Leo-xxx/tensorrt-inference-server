@@ -25,43 +25,16 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 cmake_minimum_required (VERSION 3.5)
-project (trtis-clients)
-
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-endif()
-
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-parameter -Werror")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
-include_directories("${PROJECT_SOURCE_DIR}/../..")
-include_directories("${PROJECT_BINARY_DIR}")
 
 #
-# CUDA
+# libaddsub.so
 #
-find_package(CUDA REQUIRED)
-message(STATUS "Using CUDA ${CUDA_VERSION}")
-set(CUDA_NVCC_FLAGS -std=c++11)
-
-#
-# Protobuf
-#
-set(protobuf_MODULE_COMPATIBLE TRUE)
-find_package(Protobuf CONFIG REQUIRED)
-message(STATUS "Using protobuf ${Protobuf_VERSION}")
-include_directories(${Protobuf_INCLUDE_DIRS})
-
-#
-# GRPC
-#
-find_package(gRPC CONFIG REQUIRED)
-message(STATUS "Using gRPC ${gRPC_VERSION}")
-include_directories($<TARGET_PROPERTY:gRPC::grpc,INTERFACE_INCLUDE_DIRECTORIES>)
-
-add_subdirectory(../../src/core src/core)
-add_subdirectory(../../src/clients/c++ src/clients/c++)
-add_subdirectory(../../src/clients/python src/clients/python)
+cuda_add_library(
+  addsub SHARED
+  addsub.cu kernel.cu kernel.h
+  $<TARGET_OBJECTS:proto-library>
+)
+install(
+  TARGETS addsub
+  LIBRARY DESTINATION lib
+)
